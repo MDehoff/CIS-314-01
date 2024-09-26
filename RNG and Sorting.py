@@ -32,7 +32,6 @@ print("Counts using secrets (1-65535):")
 print(counts_secrets_1_to_65535)
 
 def bubble_sort(arr):
-    # Simple implementation of bubble sort
     n = len(arr)
     for i in range(n):
         for j in range(0, n-i-1):
