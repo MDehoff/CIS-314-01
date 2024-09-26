@@ -39,15 +39,15 @@ def bubble_sort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
 
 start_time = time.time()
-bubble_sort(random_numbers_1_to_16)
+bubble_sort(randnum_1to16)
 print("Custom sort time (1-16):", time.time() - start_time)
 
 start_time = time.time()
-sorted_random_1_to_16 = sorted(random_numbers_1_to_16)
+sorted_random_1_to_16 = sorted(randnum_1to16)
 print("Built-in sort time (1-16):", time.time() - start_time)
 
 start_time = time.time()
-bubble_sort(random_numbers_1_to_65535)
+bubble_sort(randnum_1to16)
 print("Custom sort time (1-65535):", time.time() - start_time)
 
 start_time = time.time()
