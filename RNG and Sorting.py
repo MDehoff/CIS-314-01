@@ -3,33 +3,23 @@ import secrets
 import time
 from collections import Counter
 
-randnum_1to16 = [random.randint(1, 16) for _ in range(100)]
-countsrand_1to16 = Counter(randnum_1to16)
+random_numbers = [random.randint(1, 16) for _ in range(100)]
 
-print("Counts using random:")
-print(countsrand_1to16)
+secrets_numbers = [secrets.randbelow(16) + 1 for _ in range(100)]
 
-randnumsecrets_1to16 = [secrets.randbelow(16) + 1 for _ in range(100)]
-countssecret_1to16 = Counter(randnumsecrets_1to16)
+random_counts = Counter(random_numbers)
+secrets_counts = Counter(secrets_numbers)
 
-print("Counts using secrets:")
-print(countssecret_1to16)
+print("Random counts:", random_counts)
+print("Secrets counts:", secrets_counts)
 
-print("Is there a difference in counts?")
-print("Random Counts:", countsrand_1to16)
-print("Secrets Counts:", countssecret_1to16)
+random_large_numbers = [random.randint(1, 65535) for _ in range(100)]
+random_large_counts = Counter(random_large_numbers)
+print("Random large counts:", random_large_counts)
 
-random_numbers_1_to_65535 = [random.randint(1, 65535) for _ in range(100)]
-counts_random_1_to_65535 = Counter(random_numbers_1_to_65535)
-
-print("Counts using random (1-65535):")
-print(counts_random_1_to_65535)
-
-random_numbers_secrets_1_to_65535 = [secrets.randbelow(65535) + 1 for _ in range(100)]
-counts_secrets_1_to_65535 = Counter(random_numbers_secrets_1_to_65535)
-
-print("Counts using secrets (1-65535):")
-print(counts_secrets_1_to_65535)
+secrets_large_numbers = [secrets.randbelow(65535) + 1 for _ in range(100)]
+secrets_large_counts = Counter(secrets_large_numbers)
+print("Secrets large counts:", secrets_large_counts)
 
 def bubble_sort(arr):
     n = len(arr)
@@ -39,37 +29,37 @@ def bubble_sort(arr):
                 arr[j], arr[j+1] = arr[j+1], arr[j]
 
 start_time = time.time()
-bubble_sort(randnum_1to16)
-print("Custom sort time (1-16):", time.time() - start_time)
+bubble_sort(random_numbers.copy())
+print("Bubble sort time (1-16):", time.time() - start_time)
 
 start_time = time.time()
-sorted_random_1_to_16 = sorted(randnum_1to16)
+bubble_sort(random_large_numbers.copy())
+print("Bubble sort time (1-65535):", time.time() - start_time)
+
+start_time = time.time()
+random_numbers.copy().sort()
 print("Built-in sort time (1-16):", time.time() - start_time)
 
 start_time = time.time()
-bubble_sort(randnum_1to16)
-print("Custom sort time (1-65535):", time.time() - start_time)
-
-start_time = time.time()
-sorted_random_1_to_65535 = sorted(random_numbers_1_to_65535)
+random_large_numbers.copy().sort()
 print("Built-in sort time (1-65535):", time.time() - start_time)
 
-random_numbers_1_to_16_500 = [random.randint(1, 16) for _ in range(500)]
+random_large_list_16 = [random.randint(1, 16) for _ in range(500)]
 
 start_time = time.time()
-bubble_sort(random_numbers_1_to_16_500)
-print("Custom sort time (500 elements, 1-16):", time.time() - start_time)
+bubble_sort(random_large_list_16.copy())
+print("Bubble sort time (500 elements, 1-16):", time.time() - start_time)
 
 start_time = time.time()
-sorted_random_1_to_16_500 = sorted(random_numbers_1_to_16_500)
+random_large_list_16.copy().sort()
 print("Built-in sort time (500 elements, 1-16):", time.time() - start_time)
 
-random_numbers_1_to_65535_500 = [random.randint(1, 65535) for _ in range(500)]
+random_large_list_65535 = [random.randint(1, 65535) for _ in range(500)]
 
 start_time = time.time()
-bubble_sort(random_numbers_1_to_65535_500)
-print("Custom sort time (500 elements, 1-65535):", time.time() - start_time)
+bubble_sort(random_large_list_65535.copy())
+print("Bubble sort time (500 elements, 1-65535):", time.time() - start_time)
 
 start_time = time.time()
-sorted_random_1_to_65535_500 = sorted(random_numbers_1_to_65535_500)
+random_large_list_65535.copy().sort()
 print("Built-in sort time (500 elements, 1-65535):", time.time() - start_time)
