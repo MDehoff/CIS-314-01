@@ -1,8 +1,3 @@
-#Prompt used for this assignment
-#Write a python code that uses regular expressions to parse a webserver log and return the unique IP address
-
-
-
 import re
 
 def extract_unique_ips(log_file):
@@ -27,3 +22,4 @@ unique_ips = extract_unique_ips(log_file_path)
 print("Unique IP Addresses:")
 for ip in unique_ips:
     print(ip)
+
