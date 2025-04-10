@@ -1,42 +1,54 @@
-pip install pymongo
+import subprocess
+import json
 
-from pymongo import MongoClient
+# 1. INSERT documents
+insert_script = '''
+use school;
+db.students.insertMany([
+    {name: "Alice", age: 20, grade: "A"},
+    {name: "Bob", age: 21, grade: "B"},
+    {name: "Charlie", age: 22, grade: "C"}
+]);
+'''
 
-# Connect to MongoDB (make sure MongoDB is running locally)
-client = MongoClient("mongodb://localhost:27017/")
+# 2. FIND all documents
+find_script = '''
+use school;
+db.students.find().forEach(printjson);
+'''
 
-# Create/use a database called 'library'
-db = client.library
+# 3. UPDATE a document
+update_script = '''
+use school;
+db.students.updateOne(
+    {name: "Charlie"},
+    {$set: {grade: "B"}}
+);
+'''
 
-# Create/use a collection called 'books'
-books = db.books
+# 4. DELETE a document
+delete_script = '''
+use school;
+db.students.deleteOne({name: "Bob"});
+'''
 
-# 1. INSERT documents into the collection
-books.insert_many([
-    {"title": "1984", "author": "George Orwell", "year": 1949, "available": True},
-    {"title": "To Kill a Mockingbird", "author": "Harper Lee", "year": 1960, "available": True},
-    {"title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year": 1925, "available": False}
-])
+# Run a MongoDB script via the command line
+def run_mongo_script(script):
+    result = subprocess.run(['mongo', '--quiet'], input=script.encode(), capture_output=True)
+    print(result.stdout.decode())
 
-# 2. FIND all books
-print("All books:")
-for book in books.find():
-    print(book)
+# Execute operations
+print("Inserting records...")
+run_mongo_script(insert_script)
 
-# 3. UPDATE a book's availability
-books.update_one(
-    {"title": "The Great Gatsby"},
-    {"$set": {"available": True}}
-)
+print("\nFinding all students...")
+run_mongo_script(find_script)
 
-# Check update result
-print("\nUpdated 'The Great Gatsby':")
-print(books.find_one({"title": "The Great Gatsby"}))
+print("\nUpdating Charlie...")
+run_mongo_script(update_script)
 
-# 4. DELETE a book
-books.delete_one({"title": "1984"})
+print("\nDeleting Bob...")
+run_mongo_script(delete_script)
 
-# Check remaining books
-print("\nBooks after deletion:")
-for book in books.find():
-    print(book)
+print("\nFinal student list:")
+run_mongo_script(find_script)
