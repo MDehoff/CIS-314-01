@@ -1,0 +1,42 @@
+pip install pymongo
+
+from pymongo import MongoClient
+
+# Connect to MongoDB (make sure MongoDB is running locally)
+client = MongoClient("mongodb://localhost:27017/")
+
+# Create/use a database called 'library'
+db = client.library
+
+# Create/use a collection called 'books'
+books = db.books
+
+# 1. INSERT documents into the collection
+books.insert_many([
+    {"title": "1984", "author": "George Orwell", "year": 1949, "available": True},
+    {"title": "To Kill a Mockingbird", "author": "Harper Lee", "year": 1960, "available": True},
+    {"title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year": 1925, "available": False}
+])
+
+# 2. FIND all books
+print("All books:")
+for book in books.find():
+    print(book)
+
+# 3. UPDATE a book's availability
+books.update_one(
+    {"title": "The Great Gatsby"},
+    {"$set": {"available": True}}
+)
+
+# Check update result
+print("\nUpdated 'The Great Gatsby':")
+print(books.find_one({"title": "The Great Gatsby"}))
+
+# 4. DELETE a book
+books.delete_one({"title": "1984"})
+
+# Check remaining books
+print("\nBooks after deletion:")
+for book in books.find():
+    print(book)
