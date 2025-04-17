@@ -2,41 +2,45 @@ import streamlit as st
 import mysql.connector
 from mysql.connector import Error
 
-st.title("📦 MySQL Database Creator with Streamlit")
+def main():
+    st.title("📦 MySQL Database Creator with Streamlit")
 
-# User input for database details
-host = st.text_input("Host", value="localhost")
-user = st.text_input("User", value="root")
-password = st.text_input("Password", type="password")
-db_name = st.text_input("Database Name", value="my_streamlit_db")
+    # User input for database details
+    host = st.text_input("Host", value="localhost")
+    user = st.text_input("User", value="root")
+    password = st.text_input("Password", type="password")
+    db_name = st.text_input("Database Name", value="my_streamlit_db")
 
-if st.button("Create Database"):
-    try:
-        # Connect to MySQL server
-        conn = mysql.connector.connect(
-            host=host,
-            user=user,
-            password=password
-        )
-        if conn.is_connected():
-            st.success("✅ Connected to MySQL Server")
+    if st.button("Create Database"):
+        try:
+            # Connect to MySQL server
+            conn = mysql.connector.connect(
+                host=host,
+                user=user,
+                password=password
+            )
+            if conn.is_connected():
+                st.success("✅ Connected to MySQL Server")
 
-            cursor = conn.cursor()
-            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
-            st.success(f"🎉 Database `{db_name}` created or already exists!")
+                cursor = conn.cursor()
+                cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
+                st.success(f"🎉 Database `{db_name}` created or already exists!")
 
-            # Optional: Create table inside the new DB
-            cursor.execute(f"USE {db_name}")
-            cursor.execute("""
-                CREATE TABLE IF NOT EXISTS users (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(100),
-                    email VARCHAR(100)
-                )
-            """)
-            st.success("🗂️ Table `users` created inside the database.")
+                # Optional: Create table inside the new DB
+                cursor.execute(f"USE {db_name}")
+                cursor.execute("""
+                    CREATE TABLE IF NOT EXISTS users (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        name VARCHAR(100),
+                        email VARCHAR(100)
+                    )
+                """)
+                st.success("🗂️ Table `users` created inside the database.")
 
-            cursor.close()
-            conn.close()
-    except Error as e:
-        st.error(f"❌ Error: {e}")
+                cursor.close()
+                conn.close()
+        except Error as e:
+            st.error(f"❌ Error: {e}")
+
+if __name__ == "__main__":
+    main()
