@@ -1,0 +1,50 @@
+import streamlit as st
+import mysql.connector
+
+# Connect to MySQL
+def get_connection():
+    return mysql.connector.connect(
+        host='localhost',
+        user='your_mysql_username',
+        password='your_mysql_password',
+        database='my_streamlit_app'
+    )
+
+def insert_user(name, email):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO users (name, email) VALUES (%s, %s)", (name, email))
+        conn.commit()
+        st.success("User added successfully!")
+    except mysql.connector.Error as err:
+        st.error(f"Error: {err}")
+    finally:
+        cursor.close()
+        conn.close()
+
+def fetch_users():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return users
+
+# Streamlit UI
+st.title("👥 User Management App")
+
+name = st.text_input("Enter name")
+email = st.text_input("Enter email")
+
+if st.button("Add User"):
+    if name and email:
+        insert_user(name, email)
+    else:
+        st.warning("Both name and email are required.")
+
+st.subheader("Current Users")
+user_data = fetch_users()
+for user in user_data:
+    st.write(f"ID: {user[0]} | Name: {user[1]} | Email: {user[2]}")
